@@ -10,17 +10,18 @@ import { useEffect, useState } from 'react';
   
 function ProductListScreen() {
   const [products, setProducts] = useState<Product[]>([]);
-
-  
+  const [skip, setSkip] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [loadMore, setLoadMore] = useState(false);
 
   // Fetch products from the DummyJSON API
   useEffect(() => {
-  fetch('https://dummyjson.com/products?limit=20&skip=0')
+  fetch(`https://dummyjson.com/products?limit=10&skip=${skip}`)
     .then(response => response.json())
     .then(data => {
-      setProducts(data.products);
+      setProducts(currentProducts => [...currentProducts, ...data.products]);
     });
-    }, []);
+    }, [skip]);
 
   return ( 
     // Product Catalog list   
@@ -39,7 +40,31 @@ function ProductListScreen() {
               <Text>RM {item.price}</Text>
             </View>
           )}
-      />
+
+          // Add pagination to the product list each time scroll to end will loading 10 more products 
+          onEndReached={() => {
+            if (!loadMore && skip < products.length) {
+              setLoadMore(true);
+              setLoading(true);  
+              setTimeout(() => {
+                setSkip(skip + 10);
+                setLoading(false);
+                setLoadMore(false); 
+              }, 1500);
+            }
+          }}
+          
+          // Display loading text at bottom when loading more products
+          ListFooterComponent={
+            loading ? (
+                <Text style={{ flex: 1,textAlign: 'center', fontSize: 20, padding: 20 }}>
+                  Load More Products...
+                </Text>
+            ) : undefined
+          }
+        />
+
+          
       </View>
   );
 }
