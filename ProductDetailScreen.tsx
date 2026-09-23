@@ -24,6 +24,7 @@ function ProductDetailScreen({ route, navigation }: { route: any; navigation: an
     }, [id]);
 
      return (
+        // Product detail information
         <View>
             <Text style={{ fontSize: 20, textAlign: 'center', padding: 20, fontWeight: 'bold' }}>
                 Product Detail

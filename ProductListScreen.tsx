@@ -1,5 +1,5 @@
-import { FlatList, Image, Text, View, Button } from 'react-native';
-import { useEffect, useState } from 'react';
+import { FlatList, Image, Text, View, Button, TextInput } from 'react-native';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
@@ -20,9 +20,12 @@ type RootStackParamList = {
 function ProductListScreen() {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const [products, setProducts] = useState<Product[]>([]);
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [skip, setSkip] = useState(0);
   const [loading, setLoading] = useState(false);
   const [loadMore, setLoadMore] = useState(false);
+  const [search, setSearch] = useState('');
+  const timer = useRef<any>(null);
 
   // Fetch products from the DummyJSON API
   useEffect(() => {
@@ -30,6 +33,7 @@ function ProductListScreen() {
     .then(response => response.json())
     .then(data => {
       setProducts(currentProducts => [...currentProducts, ...data.products]);
+      setAllProducts(currentAllProducts => [...currentAllProducts, ...data.products]);
     });
     }, [skip]);
 
@@ -43,6 +47,37 @@ function ProductListScreen() {
         </Text>
 
       </View>
+
+      {/* Search bar to search products */}
+      <TextInput
+        placeholder="Search products..."
+        value={search}
+        onChangeText={(text) => {
+          setSearch(text);
+
+        if (text) {
+          // Debounce the search input to avoid excessive API calls
+          clearTimeout(timer.current);
+            timer.current = setTimeout(() => {
+            const results = products.filter(item =>
+              item.title.toLowerCase().includes(text.toLowerCase())
+            );
+      
+
+          setProducts(results);
+      
+          }, 1500);
+        } else { // If search input is empty and cleared, reset the product list to all products
+          clearTimeout(timer.current);
+          const results = allProducts.filter(item =>
+            item.title.toLowerCase().includes(text.toLowerCase())
+          );
+          timer.current = setTimeout(() => {
+            setProducts(results);
+          }, 1500);
+        
+          }
+        }}/>
 
       {/* Display the product list in a FlatList*/}
       <FlatList 
