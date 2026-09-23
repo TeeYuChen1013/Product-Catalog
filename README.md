@@ -1,97 +1,118 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Product Catalog
 
-# Getting Started
+## Overview
+A React Native mobile application for browsing products using the DummyJSON API.
+The application allows users to browse products, load additional products through pagination, search for products, and view product details.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+## Features
+- Browse products with product title, thumbnail, and price
+- Load more products when scrolling to the bottom of the product list
+- Search products with debounce
+- View detailed product information, including:
+  - Product title
+  - Description
+  - Price
+  - Rating
+  - Product image
+- Navigate between the product list and product detail screens
 
-## Step 1: Start Metro
+## Tech Stack
+- React Native
+- TypeScript
+- React Navigation
+- DummyJSON API
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+## Requirements
+- Node.js
+- JDK 17
+- Android Studio with an Android Virtual Device (AVD)
 
-To start the Metro dev server, run the following command from the root of your React Native project:
-
-```sh
-# Using npm
-npm start
-
-# OR using Yarn
-yarn start
-```
-
-## Step 2: Build and run your app
-
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
-
-```sh
-# Using npm
-npm run android
-
-# OR using Yarn
-yarn android
-```
-
-### iOS
-
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+## Installation
+Install the project dependencies:
 
 ```sh
-bundle install
+npm install
 ```
 
-Then, and every time you update your native dependencies, run:
+## Running the App
+
+The application requires two terminal windows. Each terminal should be opened in the project root folder, such as `C:/your/path/to/ProductCatalog`.
+
+Start the Metro bundler in First terminal(React Native):
 
 ```sh
-bundle exec pod install
+npx react-native start
 ```
-
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+In Second terminal, run the application on an Android emulator(Android Studio):
 
 ```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
+npx react-native run-android
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+## API
+The application uses the free DummyJSON API to retrieve product data.
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+### Product List
 
-## Step 3: Modify your app
+Used to retrieve products with pagination:
 
-Now that you have successfully run the app, let's make changes!
+`https://dummyjson.com/products?limit=10&skip={skip}`
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+### Product Detail
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+Used to retrieve details for a selected product:
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+`https://dummyjson.com/products/{id}`
 
-## Congratulations! :tada:
+## Architecture
+```text
+ProductCatalog/
+├── App.tsx
+├── ProductListScreen.tsx
+└── ProductDetailScreen.tsx
+```
+### App
+- App.tsx
+  - Configures the application's navigation stack
+  - Defines navigation between the product list and product detail screens
+  
+### Product List 
+- ProductListScreen.tsx
+  - Retrieves and displays the product list
+  - Handles pagination
+  - Handles product search
+  - Navigates to the product detail screen
 
-You've successfully run and modified your React Native App. :partying_face:
+### Product Detail
+- ProductDetailScreen.tsx
+    - Retrieves the selected product using the product ID
+    - Displays the product details
 
-### Now what?
+## Search Implementation
+Product search is implemented using client-side filtering with debounce.
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+The application filters the currently loaded products based on the product title. A short delay is applied before performing the filtering to avoid triggering the search operation on every keystroke.
 
-# Troubleshooting
+Client-side filtering was chosen because the product data is already loaded into the application, making basic title-based searching possible without sending an additional API request for each search input.
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+## AI Usage
+AI assistance was used mainly for guidance and debugging during development.
 
-# Learn More
+It was used for:
+- Clarifying React Native concepts and API usage
+- Understanding component and hook usage
+- Debugging syntax and runtime errors
+- Clarifying navigation and debounce implementation
 
-To learn more about React Native, take a look at the following resources:
+The core application logic and implementation were developed by the developer. Project structure and architecture decisions were also made by the developer.
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+## Unfinished / TODO
+The following assessment requirement was not completed within the development time-box:
+
+- Explicit UI states for loading, error, empty, and success conditions
+
+Possible future improvements:
+- Pull-to-refresh
+- Image loading placeholders and error handling
+- Unit tests
+- Additional UI/UX improvements
