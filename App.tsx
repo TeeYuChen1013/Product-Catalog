@@ -9,6 +9,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ProductListScreen from './ProductListScreen';
+import ProductDetailScreen from './ProductDetailScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -19,6 +20,7 @@ function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Home" component={ProductListScreen} />
+        <Stack.Screen name="ProductDetailScreen" component={ProductDetailScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
