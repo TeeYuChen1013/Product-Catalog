@@ -29,7 +29,7 @@ function ProductListScreen() {
         <Text>Product Catalog</Text>
       </View>
 
-      {/* Display the product list in a FlatList component */}
+      {/* Display the product list in a FlatList*/}
       <FlatList 
           data={products}
           renderItem={({ item }) => (
