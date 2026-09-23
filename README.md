@@ -116,3 +116,6 @@ Possible future improvements:
 - Image loading placeholders and error handling
 - Unit tests
 - Additional UI/UX improvements
+
+### Known Limitation
+- Search currently filters the products that are already loaded in the product list. Rapidly changing the search keyword during the debounce period may cause the new search to be performed against the previously filtered results.
